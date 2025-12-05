@@ -18,10 +18,23 @@ interface RecipeDetailsProps {
 export function RecipeDetails({ recipe, onOpenChange }: RecipeDetailsProps) {
   if (!recipe) return null;
 
-  // Split instructions by numbered steps (e.g., "1. ", "2. ")
-  const instructionSteps = recipe.instructions
-    .split(/\d+\.\s+/)
-    .filter((step) => step.trim() !== "");
+  // Check if instructions contain numbered steps.
+  const hasNumberedSteps = /\d+\.\s+/.test(recipe.instructions);
+  let instructionSteps: string[];
+
+  if (hasNumberedSteps) {
+    // Split instructions by numbered steps (e.g., "1. ", "2. ")
+    instructionSteps = recipe.instructions
+      .split(/\d+\.\s+/)
+      .filter((step) => step.trim() !== "");
+  } else {
+    // Fallback: Split by periods if no numbered list is found.
+    instructionSteps = recipe.instructions
+      .split('.')
+      .map(step => step.trim())
+      .filter((step) => step !== "");
+  }
+
 
   return (
     <Dialog open={!!recipe} onOpenChange={onOpenChange}>
