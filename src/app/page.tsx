@@ -35,11 +35,11 @@ export default function LandingPage() {
             </div>
             <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden shadow-2xl group">
                <Image
-                src="https://picsum.photos/seed/fresh-vegetables/1200/800"
-                alt="Fresh vegetables on a cutting board"
+                src="https://picsum.photos/seed/delicious-meal/1200/800"
+                alt="A delicious meal prepared from fresh ingredients"
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
-                data-ai-hint="fresh vegetables"
+                data-ai-hint="delicious meal"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
             </div>
