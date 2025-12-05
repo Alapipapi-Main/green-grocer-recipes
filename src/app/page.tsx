@@ -1,106 +1,51 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import type { Recipe } from "@/lib/types";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { getRecipeSuggestions } from "@/app/actions";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 import { Header } from "@/components/layout/header";
-import { IngredientForm } from "@/components/recipe/ingredient-form";
-import { RecipeSuggestions } from "@/components/recipe/recipe-suggestions";
-import { FavoritesList } from "@/components/recipe/favorites-list";
-import { RecipeDetails } from "@/components/recipe/recipe-details";
-import { useToast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
 
-export default function Home() {
-  const [suggestions, setSuggestions] = useState<Recipe[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-  const [favorites, setFavorites] = useLocalStorage<Recipe[]>("favorites", []);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const { toast } = useToast();
-
-  const handleSuggestRecipes = async ({
-    ingredients,
-  }: {
-    ingredients: string;
-  }) => {
-    setIsLoading(true);
-    setSuggestions([]);
-    const result = await getRecipeSuggestions(ingredients);
-    if ("error" in result) {
-      toast({
-        variant: "destructive",
-        title: "Oh no! Something went wrong.",
-        description: result.error,
-      });
-    } else {
-      setSuggestions(result.recipes);
-    }
-    setIsLoading(false);
-  };
-
-  const isFavorite = (recipe: Recipe) => {
-    return favorites.some(
-      (fav) =>
-        fav.name === recipe.name && fav.instructions === recipe.instructions
-    );
-  };
-
-  const handleToggleFavorite = (recipe: Recipe) => {
-    if (isFavorite(recipe)) {
-      setFavorites(
-        favorites.filter(
-          (fav) =>
-            fav.name !== recipe.name || fav.instructions !== recipe.instructions
-        )
-      );
-      toast({ description: "Removed from favorites." });
-    } else {
-      setFavorites([...favorites, recipe]);
-      toast({ description: "Added to favorites!" });
-    }
-  };
-
+export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <main className="container mx-auto p-4 md:py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-12">
-          <div className="lg:col-span-2 space-y-8">
-            <IngredientForm
-              onSubmit={handleSuggestRecipes}
-              isLoading={isLoading}
-            />
-            <Separator />
-            <RecipeSuggestions
-              suggestions={suggestions}
-              isLoading={isLoading}
-              onSelectRecipe={setSelectedRecipe}
-              onToggleFavorite={handleToggleFavorite}
-              isFavorite={isFavorite}
-            />
-          </div>
-          {isClient && (
-            <div className="mt-8 lg:mt-0">
-              <FavoritesList
-                favorites={favorites}
-                onSelectRecipe={setSelectedRecipe}
-                onToggleFavorite={handleToggleFavorite}
-              />
+      <main className="flex-1">
+        <section className="relative py-20 md:py-32">
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 top-0 h-64 bg-gradient-to-b from-primary/10 to-transparent"
+          ></div>
+          <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative">
+            <div className="space-y-6 text-center lg:text-left">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-headline tracking-tight">
+                Never wonder what to cook again.
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground">
+                Turn your leftover ingredients into delicious meals. Our AI
+                chef will help you discover amazing recipes you can make right
+                now.
+              </p>
+              <Link href="/generator" passHref>
+                <Button size="lg" className="group">
+                  Start Cooking
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
             </div>
-          )}
-        </div>
+            <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden shadow-2xl group">
+               <Image
+                src="https://picsum.photos/seed/1/1200/800"
+                alt="Delicious food"
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                data-ai-hint="food cooking"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+            </div>
+          </div>
+        </section>
       </main>
-      <RecipeDetails
-        recipe={selectedRecipe}
-        onOpenChange={(open) => !open && setSelectedRecipe(null)}
-      />
     </div>
   );
 }
