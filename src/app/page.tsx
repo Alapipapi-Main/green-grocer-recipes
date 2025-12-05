@@ -35,7 +35,7 @@ export default function LandingPage() {
             </div>
             <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden shadow-2xl group">
                <Image
-                src="https://images.unsplash.com/photo-1594041682379-307906903332?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="/images/hero-dish.jpg"
                 alt="A gourmet steak dish with crispy potato straws"
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
