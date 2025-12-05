@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Recipe } from "@/lib/types";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { getRecipeSuggestions } from "@/app/actions";
@@ -12,11 +12,61 @@ import { RecipeDetails } from "@/components/recipe/recipe-details";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 
+function FavoritesSection() {
+  const [favorites, setFavorites] = useLocalStorage<Recipe[]>("favorites", []);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const { toast } = useToast();
+
+  const isFavorite = (recipe: Recipe) => {
+    return favorites.some(
+      (fav) =>
+        fav.name === recipe.name && fav.instructions === recipe.instructions
+    );
+  };
+
+  const handleToggleFavorite = (recipe: Recipe) => {
+    if (isFavorite(recipe)) {
+      setFavorites(
+        favorites.filter(
+          (fav) =>
+            fav.name !== recipe.name || fav.instructions !== recipe.instructions
+        )
+      );
+      toast({ description: "Removed from favorites." });
+    } else {
+      setFavorites([...favorites, recipe]);
+      toast({ description: "Added to favorites!" });
+    }
+  };
+
+  return (
+    <>
+      <div className="mt-8 lg:mt-0">
+        <FavoritesList
+          favorites={favorites}
+          onSelectRecipe={setSelectedRecipe}
+          onToggleFavorite={handleToggleFavorite}
+        />
+      </div>
+      <RecipeDetails
+        recipe={selectedRecipe}
+        onOpenChange={(open) => !open && setSelectedRecipe(null)}
+      />
+    </>
+  );
+}
+
 export default function Home() {
   const [suggestions, setSuggestions] = useState<Recipe[]>([]);
-  const [favorites, setFavorites] = useLocalStorage<Recipe[]>("favorites", []);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [favorites] = useLocalStorage<Recipe[]>("favorites", []);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const { toast } = useToast();
 
   const handleSuggestRecipes = async ({
@@ -47,6 +97,9 @@ export default function Home() {
   };
 
   const handleToggleFavorite = (recipe: Recipe) => {
+    // This logic is now duplicated in FavoritesSection,
+    // but it's necessary for the RecipeSuggestions part.
+    const [_, setFavorites] = useLocalStorage<Recipe[]>("favorites", []);
     if (isFavorite(recipe)) {
       setFavorites(
         favorites.filter(
@@ -80,13 +133,7 @@ export default function Home() {
               isFavorite={isFavorite}
             />
           </div>
-          <div className="mt-8 lg:mt-0">
-            <FavoritesList
-              favorites={favorites}
-              onSelectRecipe={setSelectedRecipe}
-              onToggleFavorite={handleToggleFavorite}
-            />
-          </div>
+          {isClient && <FavoritesSection />}
         </div>
       </main>
       <RecipeDetails
