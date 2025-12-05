@@ -35,7 +35,7 @@ export default function LandingPage() {
             </div>
             <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden shadow-2xl group">
                <Image
-                src="https://picsum.photos/seed/delicious-meal/1200/800"
+                src="https://picsum.photos/seed/tasty-dish/1200/800"
                 alt="A delicious meal prepared from fresh ingredients"
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
