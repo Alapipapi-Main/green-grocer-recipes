@@ -5,6 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: "Green Grocer Recipes",
   description: "Generate delicious recipes from the ingredients you have.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
