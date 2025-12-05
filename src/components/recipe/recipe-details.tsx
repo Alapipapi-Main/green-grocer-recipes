@@ -4,9 +4,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "../ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 interface RecipeDetailsProps {
   recipe: Recipe | null;
@@ -28,24 +28,31 @@ export function RecipeDetails({ recipe, onOpenChange }: RecipeDetailsProps) {
             {recipe.name}
           </DialogTitle>
         </DialogHeader>
-        <ScrollArea className="flex-grow">
-          <div className="pr-6 space-y-4">
-            <h3 className="text-xl font-semibold mt-4">Instructions</h3>
-            <DialogDescription asChild>
-              <ul className="space-y-3 list-decimal list-inside text-foreground">
+        <div className="flex-grow min-h-0">
+          <ScrollArea className="h-full pr-6">
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Instructions</h3>
+              <ol className="space-y-4">
                 {instructionSteps.map((step, index) => (
                   <li
                     key={index}
-                    className="animate-in fade-in-0 slide-in-from-bottom-2 duration-500"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className={cn(
+                      "flex items-start gap-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500"
+                    )}
+                    style={{ animationDelay: `${index * 120}ms` }}
                   >
-                    {step.replace(/^\d+\.\s*/, "")}
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
+                      {index + 1}
+                    </div>
+                    <p className="flex-1 pt-1 text-foreground/90">
+                      {step.replace(/^\d+\.\s*/, "")}
+                    </p>
                   </li>
                 ))}
-              </ul>
-            </DialogDescription>
-          </div>
-        </ScrollArea>
+              </ol>
+            </div>
+          </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
