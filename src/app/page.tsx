@@ -64,7 +64,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <main className="container mx-auto py-8">
+      <main className="container mx-auto p-4 md:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-12">
           <div className="lg:col-span-2 space-y-8">
             <IngredientForm
