@@ -44,7 +44,7 @@ export function RecipeDetails({ recipe, onOpenChange }: RecipeDetailsProps) {
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
                       {index + 1}
                     </div>
-                    <p className="flex-1 pt-1 text-foreground/90 overflow-hidden break-words">
+                    <p className="flex-1 pt-1 text-foreground/90 break-words">
                       {step.replace(/^\d+\.\s*/, "")}
                     </p>
                   </li>
