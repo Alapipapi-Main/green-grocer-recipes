@@ -27,7 +27,7 @@ export default function LandingPage() {
                 now.
               </p>
               <Link href="/generator" passHref>
-                <Button size="lg" className="group">
+                <Button size="lg" className="group mt-4">
                   Start Cooking
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Button>
