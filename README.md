@@ -8,7 +8,7 @@ Welcome to Green Grocer Recipes! This application helps you discover delicious r
 - **Save Your Favorites**: Found a recipe you love? Save it to your personal collection for quick access later.
 - **Detailed Instructions**: Each recipe comes with clear, step-by-step instructions to guide you through the cooking process.
 
-## 🚀 Live Demo
+## 🚀 Live Website
 
 Experience the application live at: **[https://green-grocer-recipes.vercel.app/](https://green-grocer-recipes.vercel.app/)**
 
